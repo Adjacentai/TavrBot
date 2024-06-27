@@ -1,0 +1,24 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+env/
+*.env
+
+# IDE (e.g. PyCharm) files
+.idea/
+*.iml
+
+# macOS specific files
+.DS_Store
+
+# Compiled Python modules
+*.pyc
+
+# Logs and databases
+*.log
+*.sql
+*.db
+*.session
