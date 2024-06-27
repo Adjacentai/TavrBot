@@ -1,16 +1,16 @@
-# Path`s
+# folder`s path
 ANIMAL = "./TgVideos/Animal"
 FUNNY = "./TgVideos/Funny"
 
 
-# videoDownload.py
+# videoDownload.py Chat_id : folder
 DOWNLOAD_CHANNEL = {
     (-1001951263817, -1001692392564, -1001237893678, -1001163478947, -1001080141747, -1002079302764,
      -1001897631177): ANIMAL,
     (-1001154509246, -1001886293489, -1001123683328, -1001045540194, -1002087613865): FUNNY
 }
 
-# videoSend.py
+# videoSend.py  folder : myChat_id
 MY_CHANNEL = {
     ANIMAL: "-1002141467392",
     FUNNY: "-1002124118502"

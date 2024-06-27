@@ -22,6 +22,8 @@ async def main():
                 download_tg_videos(client, 100),
                 send_my_videos(3000, ANIMAL),
                 send_my_videos(3000, FUNNY)
+                # look at videoDownload.py
+                # entity_adding(client)
             )
 
 

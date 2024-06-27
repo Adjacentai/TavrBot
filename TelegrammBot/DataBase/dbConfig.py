@@ -9,7 +9,7 @@ async def init_db():
             await db.commit()
             print("DB WAS INITIALIZED")
     except aiosqlite.Error as e:
-        print(f"Ошибка инициализации базы данных: {e}")
+        print(f"Database initialization error: {e}")
 
 async def video_db_check(video_id):
     try:
@@ -17,7 +17,7 @@ async def video_db_check(video_id):
             async with conn.execute('SELECT 1 FROM Table_Video_id WHERE id = ?', (video_id,)) as cursor:
                 return await cursor.fetchone() is not None
     except aiosqlite.Error as e:
-        print(f"Ошибка при проверке видео в базе данных: {e}")
+        print(f"Error checking video in the database: {e}")
         return False
 
 async def video_db_save(video_id):
