@@ -16,7 +16,7 @@ TgUserBot_HASH = os.getenv('TgUserBot_HASH_SLVK')
 
 
 async def main():
-    async with  TelegramClient('SOSESSION', TgUserBot_ID, TgUserBot_HASH) as client:
+    async with TelegramClient('SOSESSION', TgUserBot_ID, TgUserBot_HASH) as client:
         while True:
             await asyncio.gather(
                 download_tg_videos(client, 100),
