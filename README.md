@@ -55,12 +55,12 @@ It contains a loop with three asynchronous functions:
 ```python
 while True:
     await asyncio.gather(
-        download_tg_videos(client, 100),
-        send_my_videos(3000, 'ANIMAL'),
-        send_my_videos(3000, 'FUNNY')
-        # run if u need to add chat_id in you session.db
-        # entity_adding(client)
-    )
+        download_tg_videos(client, VIDEO_DOWNLOAD_LIMIT),
+        send_my_videos(VIDEO_SEND_DELAY, ANIMAL),
+        send_my_videos(VIDEO_SEND_DELAY, FUNNY)
+         # look at videoDownload.py
+       # entity_adding(client)
+            )
 ```
 ```python
 download_tg_videos(client, limit):
