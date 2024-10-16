@@ -6,7 +6,7 @@ from telethon import TelegramClient
 
 from videoDownload import download_tg_videos
 from videoSend import send_my_videos
-from config import ANIMAL, FUNNY
+from config import ANIMAL, FUNNY, VIDEO_DOWNLOAD_LIMIT, VIDEO_SEND_DELAY
 from DataBase.dbConfig import init_db
 
 load_dotenv()
@@ -19,9 +19,9 @@ async def main():
     async with TelegramClient('SOSESSION', TgUserBot_ID, TgUserBot_HASH) as client:
         while True:
             await asyncio.gather(
-                download_tg_videos(client, 100),
-                send_my_videos(3000, ANIMAL),
-                send_my_videos(3000, FUNNY)
+                download_tg_videos(client, VIDEO_DOWNLOAD_LIMIT),
+                send_my_videos(VIDEO_SEND_DELAY, ANIMAL),
+                send_my_videos(VIDEO_SEND_DELAY, FUNNY)
                 # look at videoDownload.py
                 # entity_adding(client)
             )

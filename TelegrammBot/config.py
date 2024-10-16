@@ -15,3 +15,7 @@ MY_CHANNEL = {
     ANIMAL: "-1002141467392",
     FUNNY: "-1002124118502"
 }
+
+# tavrBot.py
+VIDEO_DOWNLOAD_LIMIT = 100  # Limit
+VIDEO_SEND_DELAY = 3000  # Delay in ms
