@@ -1,6 +1,6 @@
 import aiosqlite
 
-DB_PATH = "./DataBase/huita.db"
+DB_PATH = "./DataBase/uita.db"
 
 async def init_db():
     try:

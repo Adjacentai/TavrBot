@@ -42,7 +42,7 @@ Running TgBot
 TgBot is designed to download videos from specific Telegram groups 
 and categorize them by topics. 
 For example, videos from a group associated with the "FUNNY" category will be saved in the directory ./VideoFolder/Funny. 
-The IDs of the downloaded videos are stored in an SQLite database (huita.db) to avoid downloading duplicates.
+The IDs of the downloaded videos are stored in an SQLite database (uita.db) to avoid downloading duplicates.
 
 Run Tavr:
 ```bash
