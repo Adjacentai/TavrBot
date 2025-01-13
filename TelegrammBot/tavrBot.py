@@ -11,20 +11,27 @@ from DataBase.dbConfig import init_db
 
 load_dotenv()
 
-TgUserBot_ID = os.getenv('TgUserBot_ID_SLVK')
-TgUserBot_HASH = os.getenv('TgUserBot_HASH_SLVK')
-
+TG_ID_API = os.getenv('TG_ID_API')
+TG_HASH_API = os.getenv('TG_HASH_API')
+PHONE = os.getenv('PHONE')
 
 async def main():
-    async with TelegramClient('SOSESSION', TgUserBot_ID, TgUserBot_HASH) as client:
-        while True:
-            await asyncio.gather(
-                download_tg_videos(client, VIDEO_DOWNLOAD_LIMIT),
-                send_my_videos(VIDEO_SEND_DELAY, ANIMAL),
-                send_my_videos(VIDEO_SEND_DELAY, FUNNY)
-                # look at videoDownload.py
-                # entity_adding(client)
-            )
+    client = TelegramClient('chatbot', TG_ID_API, TG_HASH_API)
+    await client.start(phone=PHONE)
+    
+    if not await client.is_user_authorized():
+        await client.send_code_request(PHONE)
+        code = input('Введите код подтверждения: ')
+        await client.sign_in(PHONE, code)
+    
+    while True:
+        await asyncio.gather(
+            download_tg_videos(client, VIDEO_DOWNLOAD_LIMIT),
+            send_my_videos(VIDEO_SEND_DELAY, ANIMAL),
+            send_my_videos(VIDEO_SEND_DELAY, FUNNY)
+            # entity_adding(client) - look at videoDownload.py
+        )
+
 
 
 if __name__ == '__main__':

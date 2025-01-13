@@ -9,7 +9,7 @@ from aiogram import Bot
 from aiogram.types import FSInputFile
 
 load_dotenv()
-BOT_TOKEN = os.getenv('BOT_TOKEN_TAVR')
+BOT_TOKEN = os.getenv('TG_TOKEN_BOT')
 
 bot = Bot(token=BOT_TOKEN)
 
