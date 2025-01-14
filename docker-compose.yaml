@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   bot:
-    build: ./TavrV1.0/.
+    build: ./Tavrbot/.
     restart: always
     volumes:
-      - ./TavrV1.0/TelegrammBot/TgVideos:/app/TelegrammBot/TgVideos
-      - ./TavrV1.0/TelegrammBot/DataBase:/app/TelegrammBot/DataBase
-      - ./TavrV1.0/TelegrammBot/logs:/app/TelegrammBot/logs
+      - ./TavrBot/TelegrammBot/TgVideos:/app/TelegrammBot/TgVideos
+      - ./TavrBot/TelegrammBot/DataBase:/app/TelegrammBot/DataBase
+      - ./TavrBot/TelegrammBot/logs:/app/TelegrammBot/logs
     env_file:
-      - ./TavrV1.0/.env
+      - ./TavrBot/.env
     environment:
       - TZ=Europe/Moscow
     restart: unless-stopped
