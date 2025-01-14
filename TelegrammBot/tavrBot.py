@@ -1,13 +1,18 @@
 import asyncio
 import os
+import logging
 
 from dotenv import load_dotenv
 from telethon import TelegramClient
 
 from videoDownload import download_tg_videos
 from videoSend import send_my_videos
-from config import ANIMAL, FUNNY, VIDEO_DOWNLOAD_LIMIT, VIDEO_SEND_DELAY
 from DataBase.dbConfig import init_db
+from config import (
+    MediaConfig,
+    TIMING,
+)
+from TelegrammBot.entity import get_entities
 
 load_dotenv()
 
@@ -15,24 +20,34 @@ TG_ID_API = os.getenv('TG_ID_API')
 TG_HASH_API = os.getenv('TG_HASH_API')
 PHONE = os.getenv('PHONE')
 
+logger = logging.getLogger(__name__)
+
 async def main():
-    client = TelegramClient('chatbot', TG_ID_API, TG_HASH_API)
-    await client.start(phone=PHONE)
+    client = TelegramClient('Plication', TG_ID_API, TG_HASH_API)
     
-    if not await client.is_user_authorized():
-        await client.send_code_request(PHONE)
-        code = input('Введите код подтверждения: ')
-        await client.sign_in(PHONE, code)
-    
-    while True:
-        await asyncio.gather(
-            download_tg_videos(client, VIDEO_DOWNLOAD_LIMIT),
-            send_my_videos(VIDEO_SEND_DELAY, ANIMAL),
-            send_my_videos(VIDEO_SEND_DELAY, FUNNY)
-            # entity_adding(client) - look at videoDownload.py
-        )
-
-
+    try:
+        await client.start(phone=PHONE)
+        
+        if not await client.is_user_authorized():
+            await client.send_code_request(PHONE)
+            code = input('Введите код подтверждения: ')
+            await client.sign_in(PHONE, code)
+        
+        await get_entities(client)
+        
+        while True:
+            await asyncio.gather(
+                download_tg_videos(client, TIMING["VIDEO_DOWNLOAD_LIMIT"]),
+                send_my_videos(TIMING["VIDEO_SEND_DELAY"], MediaConfig.ANIMAL),
+                send_my_videos(TIMING["VIDEO_SEND_DELAY"], MediaConfig.FUNNY)
+            )
+    except KeyboardInterrupt:
+        logger.info("Получен сигнал завершения программы")
+    except Exception as e:
+        logger.error(f"Произошла ошибка: {e}")
+    finally:
+        await client.disconnect()
+        logger.info("Клиент отключен")
 
 if __name__ == '__main__':
     asyncio.run(init_db())
