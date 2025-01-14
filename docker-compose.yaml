@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   bot:
-    build: ./Tavrbot/.
+    build: ./TavrBot/.
     restart: always
     volumes:
       - ./TavrBot/TelegrammBot/TgVideos:/app/TelegrammBot/TgVideos
