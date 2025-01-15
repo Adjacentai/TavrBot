@@ -12,7 +12,7 @@ from config import (
     MediaConfig,
     TIMING,
 )
-from TelegrammBot.entity import get_entities
+from entity import get_entities
 
 load_dotenv()
 

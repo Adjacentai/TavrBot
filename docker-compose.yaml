@@ -8,6 +8,7 @@ services:
       - ./TavrBot/TelegrammBot/TgVideos:/app/TelegrammBot/TgVideos
       - ./TavrBot/TelegrammBot/DataBase:/app/TelegrammBot/DataBase
       - ./TavrBot/TelegrammBot/logs:/app/TelegrammBot/logs
+      - ./TavrBot/TelegrammBot/Plication.session:/app/Plication.session
     env_file:
       - ./TavrBot/.env
     environment:
