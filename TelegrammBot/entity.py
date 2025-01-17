@@ -18,4 +18,4 @@ async def get_entities(client):
             print(f"ID пользователя: {entity.id}")
             print(f"Юзернейм пользователя: {entity.username}")
         
-        print("---")
+        print("___________")
