@@ -1,16 +1,36 @@
+from dataclasses import dataclass
 from pathlib import Path
 import os
 from typing import Dict, Tuple, Union
 
-# Базовые директории
-BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-MEDIA_DIR = BASE_DIR / "TgVideos"
-DATABASE_DIR = BASE_DIR / "DataBase"
+@dataclass
+class Paths:
+    BASE_DIR: Path = Path(os.path.dirname(os.path.abspath(__file__)))
+    MEDIA_DIR: Path = BASE_DIR / "TgVideos"
+    DATABASE_DIR: Path = BASE_DIR / "DataBase"
+
+@dataclass
+class VideoSettings:
+    MAX_FILE_SIZE: int = 50 * 1024 * 1024  # 50MB
+    ALLOWED_FORMATS: tuple = ("mp4",)
+    MIN_DURATION: int = 3
+    MAX_DURATION: int = 60
+
+@dataclass
+class TimingSettings:
+    VIDEO_DOWNLOAD_LIMIT: int = 100
+    VIDEO_SEND_DELAY: int = 1200
+    RETRY_DELAY: int = 60
+    UPDATE_INTERVAL: int = 90000
+
+paths = Paths()
+video_settings = VideoSettings()
+timing = TimingSettings()
 
 # Конфигурация медиа категорий
 class MediaConfig:
-    ANIMAL = MEDIA_DIR / "Animal"
-    FUNNY = MEDIA_DIR / "Funny"
+    ANIMAL = paths.MEDIA_DIR / "Animal"
+    FUNNY = paths.MEDIA_DIR / "Funny"
     
     @classmethod
     def create_dirs(cls) -> None:
@@ -20,24 +40,24 @@ class MediaConfig:
 
 # Настройки видео
 VIDEO_SETTINGS = {
-    "MAX_FILE_SIZE": 50 * 1024 * 1024,  # 50MB в байтах
-    "ALLOWED_FORMATS": ["mp4"],
-    "MIN_DURATION": 3,  # минимальная длительность видео в секундах
-    "MAX_DURATION": 60  # максимальная длительность видео в секундах
+    "MAX_FILE_SIZE": video_settings.MAX_FILE_SIZE,  # 50MB в байтах
+    "ALLOWED_FORMATS": video_settings.ALLOWED_FORMATS,
+    "MIN_DURATION": video_settings.MIN_DURATION,  # минимальная длительность видео в секундах
+    "MAX_DURATION": video_settings.MAX_DURATION  # максимальная длительность видео в секундах
 }
 
 # Конфигурация таймингов
 TIMING = {
-    "VIDEO_DOWNLOAD_LIMIT": 100,  # Максимальное количество видео для обработки на канал
-    "VIDEO_SEND_DELAY": 1200,     # Задержка между отправкой видео
-    "RETRY_DELAY": 60,            # Задержка перед повторной попыткой при ошибке (секунды)
-    "UPDATE_INTERVAL": 90000      # Как часто проверять новые видео (секунды)
+    "VIDEO_DOWNLOAD_LIMIT": timing.VIDEO_DOWNLOAD_LIMIT,  # Максимальное количество видео для обработки на канал
+    "VIDEO_SEND_DELAY": timing.VIDEO_SEND_DELAY,     # Задержка между отправкой видео
+    "RETRY_DELAY": timing.RETRY_DELAY,            # Задержка перед повторной попыткой при ошибке (секунды)
+    "UPDATE_INTERVAL": timing.UPDATE_INTERVAL      # Как часто проверять новые видео (секунды)
 }
 
 # Настройки базы данных
 DB_CONFIG = {
-    "path": DATABASE_DIR / "uita.db",
-    "backup_path": DATABASE_DIR / "backups",
+    "path": paths.DATABASE_DIR / "uita.db",
+    "backup_path": paths.DATABASE_DIR / "backups",
     "max_backup_count": 5,
     "backup_interval": 86400  # 24 часа в секундах
 }
@@ -46,7 +66,7 @@ DB_CONFIG = {
 LOGGING = {
     "max_file_size": 5 * 1024 * 1024,  # 5MB
     "backup_count": 10,
-    "log_dir": BASE_DIR / "logs"
+    "log_dir": paths.BASE_DIR / "logs"
 }
 
 # Конфигурация каналов для загрузки
