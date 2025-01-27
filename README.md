@@ -56,8 +56,7 @@ It contains a loop with three asynchronous functions:
 while True:
     await asyncio.gather(
         download_tg_videos(client, VIDEO_DOWNLOAD_LIMIT),
-        send_my_videos(VIDEO_SEND_DELAY, ANIMAL),
-        send_my_videos(VIDEO_SEND_DELAY, FUNNY)
+        send_my_videos(VIDEO_SEND_DELAY, ANIMAL)
          # look at videoDownload.py
        # entity_adding(client)
             )

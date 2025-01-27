@@ -18,8 +18,9 @@ class VideoSettings:
 
 @dataclass
 class TimingSettings:
-    VIDEO_DOWNLOAD_LIMIT: int = 100
-    VIDEO_SEND_DELAY: int = 1200
+    VIDEO_DOWNLOAD_LIMIT: int = 20
+    VIDEO_DOWNLOAD_DELAY: int = 30
+    VIDEO_SEND_DELAY: int = 1000
     RETRY_DELAY: int = 60
     UPDATE_INTERVAL: int = 90000
 
@@ -30,12 +31,12 @@ timing = TimingSettings()
 # Конфигурация медиа категорий
 class MediaConfig:
     ANIMAL = paths.MEDIA_DIR / "Animal"
-    FUNNY = paths.MEDIA_DIR / "Funny"
+
     
     @classmethod
     def create_dirs(cls) -> None:
         """Создает все необходимые директории, если они не существуют"""
-        for path in [cls.ANIMAL, cls.FUNNY]:
+        for path in [cls.ANIMAL]:
             path.mkdir(parents=True, exist_ok=True)
 
 # Настройки видео
