@@ -38,16 +38,12 @@ async def main():
         while True:
             await asyncio.gather(
                 download_tg_videos(client, TIMING["VIDEO_DOWNLOAD_LIMIT"]),
-                send_my_videos(TIMING["VIDEO_SEND_DELAY"], MediaConfig.ANIMAL),
-                send_my_videos(TIMING["VIDEO_SEND_DELAY"], MediaConfig.FUNNY)
+                send_my_videos(TIMING["VIDEO_SEND_DELAY"], MediaConfig.ANIMAL)
             )
     except KeyboardInterrupt:
         logger.info("Получен сигнал завершения программы")
     except Exception as e:
         logger.error(f"Произошла ошибка: {e}")
-    finally:
-        await client.disconnect()
-        logger.info("Клиент отключен")
 
 if __name__ == '__main__':
     asyncio.run(init_db())
