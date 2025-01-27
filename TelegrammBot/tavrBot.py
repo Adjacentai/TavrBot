@@ -23,7 +23,7 @@ PHONE = os.getenv('PHONE')
 logger = logging.getLogger(__name__)
 
 async def main():
-    client = TelegramClient('Plication', TG_ID_API, TG_HASH_API)
+    client = TelegramClient('tavrik', TG_ID_API, TG_HASH_API)
     
     try:
         await client.start(phone=PHONE)
