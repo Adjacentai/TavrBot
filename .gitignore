@@ -24,4 +24,5 @@ env/
 *.db
 *.session
 
+tavrik.session-journal
 TgVideos/

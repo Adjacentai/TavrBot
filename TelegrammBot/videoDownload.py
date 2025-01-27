@@ -45,7 +45,9 @@ async def download_tg_videos(client, limit: int):
                         
                         try:
                             await download_with_retry(client, message, file_path)
-                            await asyncio.sleep(TIMING["VIDEO_DOWNLOAD_DELAY"])
+                            # Используем значение по умолчанию, если ключ отсутствует
+                            delay = TIMING.get("VIDEO_DOWNLOAD_DELAY", 30)
+                            await asyncio.sleep(delay)
                             if os.path.exists(file_path):
                                 await video_db_save(message.id)
                                 file_size = os.path.getsize(file_path)

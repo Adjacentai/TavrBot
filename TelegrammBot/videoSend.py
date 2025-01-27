@@ -4,7 +4,7 @@ import logging
 
 from dotenv import load_dotenv
 
-from config import MY_CHANNEL
+from config import MY_CHANNEL, TIMING
 from aiogram import Bot
 from aiogram.types import FSInputFile
 
@@ -27,34 +27,24 @@ async def send_my_videos(interval_smv: int, topic_smv: str):
     
     while True:
         videos = os.listdir(topic_smv)
-        videos_count = len(videos)
         
         if not videos:
-            logger.debug(f"Нет видео в директории {topic_smv}")
             await asyncio.sleep(interval_smv)
             continue
-        
-        logger.info(f"Найдено {videos_count} видео в директории {topic_smv}")
 
         for video in videos:
             video_path = os.path.join(topic_smv, video)
-            file_size = os.path.getsize(video_path)
-            
-            logger.info(f"Отправка видео {video} ({file_size} байт) в канал {MY_CHANNEL[topic_smv]}")
             
             try:
+                # Сначала отправляем видео
                 await bot.send_video(MY_CHANNEL[topic_smv], FSInputFile(video_path))
-            except Exception as e:
-                logger.error(f"Ошибка при отправке видео {video}: {str(e)}\n"
-                           f"Путь: {video_path}\n"
-                           f"Размер: {file_size} байт\n"
-                           f"Канал: {MY_CHANNEL[topic_smv]}")
+                # Только после успешной отправки удаляем файл
                 if os.path.exists(video_path):
                     os.remove(video_path)
-                    logger.info(f"Файл {video} удален после ошибки отправки")
-                continue
-            else:
-                os.remove(video_path)
-                logger.info(f"Видео {video} успешно отправлено в канал {MY_CHANNEL[topic_smv]}")
-
-            await asyncio.sleep(interval_smv)
+                    logger.info(f"Видео {video} успешно отправлено и удалено")
+                
+                await asyncio.sleep(interval_smv)
+            except Exception as e:
+                logger.error(f"Ошибка при отправке видео {video}: {str(e)}")
+                # При ошибке не удаляем файл, чтобы попробовать отправить снова
+                await asyncio.sleep(TIMING["RETRY_DELAY"])

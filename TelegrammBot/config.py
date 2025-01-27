@@ -50,6 +50,7 @@ VIDEO_SETTINGS = {
 # Конфигурация таймингов
 TIMING = {
     "VIDEO_DOWNLOAD_LIMIT": timing.VIDEO_DOWNLOAD_LIMIT,  # Максимальное количество видео для обработки на канал
+    "VIDEO_DOWNLOAD_DELAY": timing.VIDEO_DOWNLOAD_DELAY,
     "VIDEO_SEND_DELAY": timing.VIDEO_SEND_DELAY,     # Задержка между отправкой видео
     "RETRY_DELAY": timing.RETRY_DELAY,            # Задержка перед повторной попыткой при ошибке (секунды)
     "UPDATE_INTERVAL": timing.UPDATE_INTERVAL      # Как часто проверять новые видео (секунды)
