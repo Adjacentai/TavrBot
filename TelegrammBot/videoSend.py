@@ -31,7 +31,7 @@ async def send_my_videos(interval_smv: int, topic_smv: str):
         if not videos:
             await asyncio.sleep(interval_smv)
             continue
-
+        random.shuffle(videos)  # Перемешиваем список видео
         for video in videos:
             video_path = os.path.join(topic_smv, video)
             
