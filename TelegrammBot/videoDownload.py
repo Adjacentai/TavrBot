@@ -45,7 +45,6 @@ async def download_tg_videos(client, limit: int):
                         
                         try:
                             await download_with_retry(client, message, file_path)
-                            # Используем значение по умолчанию, если ключ отсутствует
                             delay = TIMING.get("VIDEO_DOWNLOAD_DELAY", 30)
                             await asyncio.sleep(delay)
                             if os.path.exists(file_path):
@@ -67,21 +66,16 @@ async def download_with_retry(client, message, file_path, max_retries=3):
     temp_path = f"{file_path}.temp"
     for attempt in range(max_retries):
         try:
-            # Удаляем временный файл, если он существует
             if os.path.exists(temp_path):
                 os.remove(temp_path)
             
-            # Загружаем во временный файл
             await client.download_media(message, temp_path)
             
-            # Ждем немного, чтобы убедиться, что файл полностью записан
             await asyncio.sleep(29)
             
-            # Проверяем размер загруженного файла
             if os.path.exists(temp_path):
                 file_size = os.path.getsize(temp_path)
                 if file_size > 0 and file_size == message.media.document.size:
-                    # Если размер совпадает с ожидаемым, переименовываем
                     os.rename(temp_path, file_path)
                     return True
                 else:
