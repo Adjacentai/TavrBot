@@ -21,10 +21,10 @@ load_dotenv()
 TG_ID_API = os.getenv('TG_ID_API')
 TG_HASH_API = os.getenv('TG_HASH_API')
 PHONE = os.getenv('PHONE')
-# Добавляем переменную для строки сессии
+
+
 SESSION_STRING = os.getenv('SESSION_STRING')
 
-# Создаем директорию для сессии
 SESSION_DIR = Path(__file__).parent / "sessions"
 SESSION_FILE = SESSION_DIR / "tavrik.session"
 
