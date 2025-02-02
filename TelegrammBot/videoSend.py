@@ -31,14 +31,12 @@ async def send_my_videos(interval_smv: int, topic_smv: str):
         if not videos:
             await asyncio.sleep(interval_smv)
             continue
-        random.shuffle(videos)  # Перемешиваем список видео
+        random.shuffle(videos)  
         for video in videos:
             video_path = os.path.join(topic_smv, video)
             
             try:
-                # Сначала отправляем видео
                 await bot.send_video(MY_CHANNEL[topic_smv], FSInputFile(video_path))
-                # Только после успешной отправки удаляем файл
                 if os.path.exists(video_path):
                     os.remove(video_path)
                     logger.info(f"Видео {video} успешно отправлено и удалено")
@@ -46,5 +44,4 @@ async def send_my_videos(interval_smv: int, topic_smv: str):
                 await asyncio.sleep(interval_smv)
             except Exception as e:
                 logger.error(f"Ошибка при отправке видео {video}: {str(e)}")
-                # При ошибке не удаляем файл, чтобы попробовать отправить снова
                 await asyncio.sleep(TIMING["RETRY_DELAY"])
