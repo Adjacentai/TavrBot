@@ -6,7 +6,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-from telethon.errors import SessionPasswordNeededError, SessionExpiredError, ConnectionError
+from telethon.errors import SessionPasswordNeededError, SessionExpiredError
+from ConnectionError import ConnectionError
 
 from videoDownload import download_tg_videos
 from videoSend import send_my_videos
