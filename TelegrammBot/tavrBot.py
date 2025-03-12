@@ -26,22 +26,23 @@ PHONE = os.getenv('PHONE')
 SESSION_STRING = os.getenv('SESSION_STRING')
 
 SESSION_DIR = Path(__file__).parent / "sessions"
-SESSION_FILE = SESSION_DIR / "tavrik.session"
+SESSION_FILE = "/TelegrammBot/sessions/tavrik.session"
 
 os.makedirs(SESSION_DIR, exist_ok=True)
 
 logger = logging.getLogger(__name__)
 
 async def main():
-    client = TelegramClient('tavrik', TG_ID_API, TG_HASH_API)
+    client = TelegramClient(SESSION_FILE, TG_ID_API, TG_HASH_API)
     
     try:
-        await client.start(phone=PHONE, password=os.getenv('TG_2FA_PASSWORD'))
+        await client.start(phone=PHONE)
         
         if not await client.is_user_authorized():
             await client.send_code_request(PHONE)
             code = input('Введите код подтверждения: ')
-            await client.sign_in(phone=PHONE, code=code, password=os.getenv('TG_2FA_PASSWORD'))
+            password = input('Введите пароль двухфакторной аутентификации: ')
+            await client.sign_in(phone=PHONE, code=code, password=password)
         
         await get_entities(client)
         

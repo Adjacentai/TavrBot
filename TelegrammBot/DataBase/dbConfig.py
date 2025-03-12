@@ -1,6 +1,8 @@
 import aiosqlite
+from config import DB_CONFIG
 
-DB_PATH = "./DataBase/uita.db"
+# Используем путь из конфигурации
+DB_PATH = DB_CONFIG["path"]
 
 async def init_db():
     try:

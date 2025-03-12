@@ -5,6 +5,7 @@ services:
     build: ./TavrBot/.
     restart: always
     volumes:
+      - ./TavrBot/TelegrammBot/sessions:/app/TelegrammBot/sessions
       - ./TavrBot/TelegrammBot/TgVideos:/app/TelegrammBot/TgVideos
       - ./TavrBot/TelegrammBot/DataBase:/app/TelegrammBot/DataBase
       - ./TavrBot/TelegrammBot/logs:/app/TelegrammBot/logs
