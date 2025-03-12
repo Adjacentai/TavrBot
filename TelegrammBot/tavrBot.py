@@ -26,7 +26,7 @@ PHONE = os.getenv('PHONE')
 SESSION_STRING = os.getenv('SESSION_STRING')
 
 SESSION_DIR = Path(__file__).parent / "sessions"
-SESSION_FILE = "/TelegrammBot/sessions/tavrik.session"
+SESSION_FILE = SESSION_DIR / "tavrik.session"
 
 os.makedirs(SESSION_DIR, exist_ok=True)
 
