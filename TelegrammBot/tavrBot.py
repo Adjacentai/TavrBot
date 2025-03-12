@@ -66,7 +66,7 @@ async def main():
 
         await client.start(phone=PHONE)
         
-        if not await client.is_user_uthorized():
+        if not await client.is_user_authorized():
             logger.info("Пользователь не авторизован, запрашиваем код подтверждения")
             await client.send_code_request(PHONE)
             code = input('Введите код подтверждения: ')
