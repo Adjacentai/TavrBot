@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-from telethon.errors import SessionPasswordNeededError
+from telethon.errors import SessionPasswordNeededError, SessionExpiredError, ConnectionError
 
 from videoDownload import download_tg_videos
 from videoSend import send_my_videos
@@ -36,8 +36,16 @@ async def main():
     
     if SESSION_FILE.exists():
         logger.info("Найдена сохраненная сессия")
-        with open(SESSION_FILE, 'r') as f:
-            SESSION_STRING = f.read()
+        try:
+            # Чтение файла в бинарном режиме
+            with open(SESSION_FILE, 'rb') as f:
+                session_data = f.read()
+                SESSION_STRING = session_data.decode('utf-8', errors='replace')
+                logger.info("Сессия успешно загружена")
+        except Exception as e:
+            logger.error(f"Ошибка при чтении файла сессии: {e}")
+            logger.info("Создаем новую сессию")
+            SESSION_STRING = None
     else:
         logger.info("Сохраненная сессия не найдена, требуется новая авторизация")
         SESSION_STRING = None
@@ -45,6 +53,17 @@ async def main():
     client = TelegramClient(StringSession(SESSION_STRING), TG_ID_API, TG_HASH_API)
     
     try:
+        # Проверяем валидность сессии
+        if SESSION_STRING:
+            try:
+                await client.connect()
+                if not await client.is_user_authorized():
+                    raise SessionExpiredError
+            except (SessionExpiredError, ConnectionError):
+                logger.warning("Сохраненная сессия недействительна, требуется новая авторизация")
+                SESSION_STRING = None
+                client = TelegramClient(None, TG_ID_API, TG_HASH_API)
+
         await client.start(phone=PHONE)
         
         if not await client.is_user_uthorized():
@@ -60,9 +79,9 @@ async def main():
                 await client.sign_in(password=password)
         
         logger.info("Авторизация успешно завершена")
-        # Сохраняем сессию в файл
-        with open(SESSION_FILE, 'w') as f:
-            f.write(client.session.save())
+        # Сохраняем сессию в бинарном режиме
+        with open(SESSION_FILE, 'wb') as f:
+            f.write(client.session.save().encode('utf-8'))
         
         await get_entities(client)
         
