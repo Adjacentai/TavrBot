@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 from telethon.errors import SessionPasswordNeededError, SessionExpiredError
-from ConnectionError import ConnectionError
 
 from videoDownload import download_tg_videos
 from videoSend import send_my_videos
@@ -60,8 +59,8 @@ async def main():
                 await client.connect()
                 if not await client.is_user_authorized():
                     raise SessionExpiredError
-            except (SessionExpiredError, ConnectionError):
-                logger.warning("Сохраненная сессия недействительна, требуется новая авторизация")
+            except (SessionExpiredError, ConnectionError) as e:
+                logger.warning(f"Ошибка соединения: {e}")
                 SESSION_STRING = None
                 client = TelegramClient(None, TG_ID_API, TG_HASH_API)
 
