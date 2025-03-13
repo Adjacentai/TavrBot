@@ -3,7 +3,7 @@ import logging.handlers
 import os
 from pathlib import Path
 
-def setup_logger(name: str, log_dir: Path, max_size: int = 5*1024*1024, backup_count: int = 10) -> logging.Logger:
+def setup_logger(name: str, log_dir: Path, max_size: int = 5 * 1024 * 1024, backup_count: int = 10) -> logging.Logger:
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
     
@@ -17,9 +17,6 @@ def setup_logger(name: str, log_dir: Path, max_size: int = 5*1024*1024, backup_c
         encoding='utf-8'
     )
     
-    # Консольный обработчик
-    console_handler = logging.StreamHandler()
-    
     # Форматирование
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -27,6 +24,9 @@ def setup_logger(name: str, log_dir: Path, max_size: int = 5*1024*1024, backup_c
     )
     
     file_handler.setFormatter(formatter)
+    
+    # Консольный обработчик
+    console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
     
     logger.addHandler(file_handler)

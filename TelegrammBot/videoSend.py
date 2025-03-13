@@ -1,21 +1,22 @@
 import os
 import asyncio
 import logging
+import random
+from pathlib import Path
 
 from dotenv import load_dotenv
 
 from config import MY_CHANNEL, TIMING
 from aiogram import Bot
 from aiogram.types import FSInputFile
+from utils.logger import setup_logger
 
 load_dotenv()
 BOT_TOKEN = os.getenv('TG_TOKEN_BOT')
 
 bot = Bot(token=BOT_TOKEN)
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
+logger = setup_logger('videoSend', Path(__file__).parent / 'logs')
 
 async def send_my_videos(interval_smv: int, topic_smv: str):
     logger.info(f"Запуск сервиса отправки видео. Папка: {topic_smv}, Интервал: {interval_smv} сек")

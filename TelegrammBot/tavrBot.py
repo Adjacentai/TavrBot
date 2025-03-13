@@ -16,6 +16,7 @@ from config import (
     TIMING
 )
 from entity import get_entities
+from utils.logger import setup_logger
 
 load_dotenv()
 
@@ -23,21 +24,20 @@ TG_ID_API = os.getenv('TG_ID_API')
 TG_HASH_API = os.getenv('TG_HASH_API')
 PHONE = os.getenv('PHONE')
 
-
 SESSION_DIR = Path(__file__).parent / "sessions"
 SESSION_FILE = SESSION_DIR / "tavrik.session"
 
 os.makedirs(SESSION_DIR, exist_ok=True)
 
-logger = logging.getLogger(__name__)
+logger = setup_logger('tavrBot', Path(__file__).parent / 'logs')
 
 async def main():
     logger.info("Начало процесса авторизации")
     
+    SESSION_STRING = None
     if SESSION_FILE.exists():
         logger.info("Найдена сохраненная сессия")
         try:
-            # Чтение файла в бинарном режиме
             with open(SESSION_FILE, 'rb') as f:
                 session_data = f.read()
                 SESSION_STRING = session_data.decode('utf-8', errors='replace')
@@ -45,25 +45,10 @@ async def main():
         except Exception as e:
             logger.error(f"Ошибка при чтении файла сессии: {e}")
             logger.info("Создаем новую сессию")
-            SESSION_STRING = None
-    else:
-        logger.info("Сохраненная сессия не найдена, требуется новая авторизация")
-        SESSION_STRING = None
 
     client = TelegramClient(StringSession(SESSION_STRING), TG_ID_API, TG_HASH_API)
     
     try:
-        # Проверяем валидность сессии
-        if SESSION_STRING:
-            try:
-                await client.connect()
-                if not await client.is_user_authorized():
-                    raise SessionExpiredError
-            except (SessionExpiredError, ConnectionError) as e:
-                logger.warning(f"Ошибка соединения: {e}")
-                SESSION_STRING = None
-                client = TelegramClient(None, TG_ID_API, TG_HASH_API)
-
         await client.start(phone=PHONE)
         
         if not await client.is_user_authorized():
@@ -79,9 +64,9 @@ async def main():
                 await client.sign_in(password=password)
         
         logger.info("Авторизация успешно завершена")
-        # Сохраняем сессию в бинарном режиме
         with open(SESSION_FILE, 'wb') as f:
-            f.write(client.session.save().encode('utf-8'))
+            session_data = client.session.save()
+            f.write(session_data.encode('utf-8'))
         
         await get_entities(client)
         
